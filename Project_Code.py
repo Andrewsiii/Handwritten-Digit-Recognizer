@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
 
 
@@ -27,8 +28,9 @@ class MyApp(QMainWindow):
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
 
+        
 
-        self.statusBar()
+        self.statusBar().showMessage('Ready')
 
         menubar = self.menuBar()
         filemenu = menubar.addMenu('&File')
@@ -46,8 +48,23 @@ class MyApp(QMainWindow):
 
     def OpenWindow(self):
         dialog = QDialog(self)
-        dialog.setWindowTitle('Handwritten Digit Recognizer')
+        dialog.setWindowTitle('Train Model')
         dialog.setGeometry(300, 300, 300, 200)
+        grid = QGridLayout()
+        dialog.setLayout(grid)
+        btn1 = QPushButton('&Download MNIST', self)
+        
+        
+
+        btn2 = QPushButton(self)
+        btn2.setText('Train')
+
+        btn3 = QPushButton('cancel', self)
+        btn3.clicked.connect(dialog.close)
+        
+        grid.addWidget(btn1,3,1)
+        grid.addWidget(btn2,3,2)
+        grid.addWidget(btn3,3,3)
         dialog.show()
         
         
