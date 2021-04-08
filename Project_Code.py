@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog
 from PyQt5.QtGui import QIcon
 
 
@@ -18,6 +18,7 @@ class MyApp(QMainWindow):
         TrainModel = QAction ('Train Model', self)
         TrainModel.setShortcut('Ctrl+T')
         TrainModel.setStatusTip('Train the model')
+        TrainModel.triggered.connect(self.OpenWindow)
         
 
         viewTrainingImages = QAction ('View Training Images', self)
@@ -43,6 +44,13 @@ class MyApp(QMainWindow):
         self.setGeometry(300, 300, 300, 200)
         self.show()
 
+    def OpenWindow(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle('Handwritten Digit Recognizer')
+        dialog.setGeometry(300, 300, 300, 200)
+        dialog.show()
+        
+        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
