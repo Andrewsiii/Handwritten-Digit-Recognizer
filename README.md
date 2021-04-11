@@ -5,5 +5,5 @@ The installation will require the following libraries to use:
 PyQt5 
 ## Usage
 *insert image here
-The DNN model can be found under the project Code
+*The DNN model can be found under the project Code
 
