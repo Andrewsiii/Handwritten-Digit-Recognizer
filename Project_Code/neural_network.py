@@ -7,11 +7,11 @@ class LeNet5(nn.Module):
     def __init__(self):
         super(LeNet5, self).__init__()
 
-        self.conv1 = nn.Conv2d(1, 32, 5)
-        self.conv2 = nn.Conv2d(32, 64, 5)
-        self.fc1 = nn.Linear(1024, 400)
-        self.fc2 = nn.Linear(400, 128)
-        self.fc3 = nn.Linear(128, 10)
+        self.conv1 = nn.Conv2d(1, 6, 5)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1 = nn.Linear(256, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 10)
         self.relu = nn.ReLU()
         self.avepooling = nn.AvgPool2d(2)
         self.softmax = nn.LogSoftmax(-1)
