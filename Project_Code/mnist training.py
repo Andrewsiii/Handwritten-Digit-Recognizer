@@ -15,7 +15,7 @@ from skimage import data, io, filters
 from PIL import Image, ImageOps
 
 #training settings
-batch_size = 32
+batch_size = 64 
 
 
 #Mnist dataset
@@ -30,6 +30,10 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuff
 
 testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
 
+x, _ = trainset[7777] # x is now a torch.Tensor
+plt.imshow(x.numpy()[0])
+plt.show()
+
 from neural_network import LeNet5
 #from linear_network import Net
 
@@ -37,7 +41,7 @@ from neural_network import LeNet5
 model = LeNet5()
 #model = Net()
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.1)
+optimizer = optim.SGD(model.parameters(), lr=0.00035, momentum=0.5)
 
 #training function
 def train(epoch):
@@ -74,9 +78,9 @@ def test():
 data_dir = 'C://Users//jhpau//testdata'
 test_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])
 
-image = Image.open(data_dir + '/4/4.png')
+image = Image.open(data_dir + '/2/2.png')
 
-#image = ImageOps.grayscale(image)
+image = ImageOps.grayscale(image)
 image = np.array(image)
 image = resize((image), (28,28), anti_aliasing= True)
 
@@ -102,7 +106,7 @@ image = image.unsqueeze(1)
 
 #running the training
 test()
-for epoch in range (1, 6):
+for epoch in range (1, 16):
     train(epoch)
     test()
 
