@@ -1,32 +1,47 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter
 
-class CanvasWindow(QMainWindow):
-        def __init__(self,parent = None):
-            super(CanvasWindow,self).__init__(parent,Qt.Window)
-            self.label = QLabel()
-            canvas = QPixmap(500,500)
-            canvas.fill(Qt.black)
-            self.label.setPixmap(canvas)
+class Canvas(QLabel):
 
-            self.setCentralWidget(self.label)
-            vbox = QVBoxLayout()
-            vbox.addWidget(self.label)
-            self.setLayout(vbox)
-            self.setWindowTitle('Canvas')
-            self.setGeometry(300, 200, 800, 600)
-           
+    def __init__(self):
+        super().__init__()
+        canvas = QPixmap(600, 400)
+        canvas.fill(Qt.black)
+        self.setPixmap(canvas)
+        
+    def mouseMoveEvent(self, e):
+        painter = QPainter(self.pixmap())
+        painter.setPen(QPen(Qt.white,  20))  #Change Pen thickness HERE increase number for thicker pen
+        painter.drawPoint(e.x(), e.y())
+        painter.end()
+        self.update()
+class CanvasWindow(QMainWindow):   #to open the canvas window
 
+    def __init__(self,parent = None):
+        super(CanvasWindow,self).__init__(parent,Qt.Window)
 
-        def mouseMoveEvent(self, e):
-            painter = QPainter(self.label.pixmap())
-            painter.setPen(QPen(Qt.white,  20))
-            painter.drawPoint(e.x(), e.y())
-            painter.end()
-            self.update()
+        self.canvas = Canvas()
+        canvas = QWidget()
+        grid =QGridLayout()
+        canvas.setLayout(grid)
+        grid.addWidget(self.canvas,0,1)
+        Recognize = QPushButton('&Recognize', self)
+        Clear = QPushButton('&Clear', self)
+        Random = QPushButton('&Random', self)
+        Model = QPushButton('&Model', self)
+        grid.addWidget(Recognize,0,2)
+        grid.addWidget(Clear,1,2)
+        grid.addWidget(Random,2,2)
+        grid.addWidget(Model,3,2)
+        
 
+        self.setCentralWidget(canvas)    
+        self.setWindowTitle('Canvas')
+        self.setGeometry(300, 200, 800, 400)
+        
+        
 class MyApp(QMainWindow):
 
     def __init__(self,parent=None):
@@ -79,6 +94,7 @@ class MyApp(QMainWindow):
         grid = QGridLayout()
         dialog.setLayout(grid)
         btn1 = QPushButton('&Download MNIST', self)
+        
         btn2 = QPushButton(self)
         btn2.setText('Train')
 
