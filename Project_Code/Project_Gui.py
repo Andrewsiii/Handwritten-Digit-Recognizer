@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBo
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter
 
-class Canvas(QLabel):
+class Canvas(QLabel):    #Canvas Widget itself
 
     def __init__(self):
         super().__init__()
@@ -17,7 +17,7 @@ class Canvas(QLabel):
         painter.drawPoint(e.x(), e.y())
         painter.end()
         self.update()
-class CanvasWindow(QMainWindow):   #to open the canvas window
+class CanvasWindow(QMainWindow):   #The Canvas Window
 
     def __init__(self,parent = None):
         super(CanvasWindow,self).__init__(parent,Qt.Window)
@@ -42,13 +42,13 @@ class CanvasWindow(QMainWindow):   #to open the canvas window
         self.setGeometry(300, 200, 800, 400)
         
         
-class MyApp(QMainWindow):
+class MyApp(QMainWindow):   # The GUI ITSELF
 
     def __init__(self,parent=None):
         super(MyApp,self).__init__(parent)
         self.initUI()
 
-    def initUI(self):
+    def initUI(self):   #Anything under the GUI/first window is here 
         exitAction = QAction('Quit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('Exit application')
@@ -61,7 +61,7 @@ class MyApp(QMainWindow):
         
 
         viewTrainingImages = QAction ('View Training Images', self)
-        viewTrainingImages.setStatusTip('View the training images')
+        viewTrainingImages.setStatusTip('View the training images')  #to test use triggered function like drawing canvas
 
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
@@ -87,7 +87,7 @@ class MyApp(QMainWindow):
         self.setGeometry(300, 200, 800, 600)
         self.show()
 
-    def OpenWindow(self):
+    def OpenWindow(self):   #This function is for the dialog box when Train model is pressed. Need to update
         dialog = QDialog(self)
         dialog.setWindowTitle('Train Model')
         dialog.setGeometry(300, 300, 300, 200)
