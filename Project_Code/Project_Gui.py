@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter
 
@@ -7,15 +7,23 @@ class Canvas(QLabel):    #Canvas Widget itself
 
     def __init__(self):
         super().__init__()
-        canvas = QPixmap(600, 400)
-        canvas.fill(Qt.black)
-        self.setPixmap(canvas)
+        self.canvas = QPixmap(600, 400)
+        self.canvas.fill(Qt.black)
+        self.setPixmap(self.canvas)
     def mouseMoveEvent(self, e):
-        painter = QPainter(self.pixmap())
-        painter.setPen(QPen(Qt.white,  20))  #Change Pen thickness HERE increase number for thicker pen
-        painter.drawPoint(e.x(), e.y())  #think u do canvas.save to save the widget as image. Will test later. it works like canvas.save("example.png")
-        painter.end()
+        self.painter = QPainter(self.pixmap())
+        self.painter.setPen(QPen(Qt.white,  20))  #Change Pen thickness HERE increase number for thicker pen
+        self.painter.drawPoint(e.x(), e.y())  #think u do canvas.save to save the widget as image. Will test later. it works like canvas.save("example.png")
+        self.painter.end()
         self.update()
+    def Clear(self):    #Clears the canvas
+        self.painter = QPainter(self.pixmap())
+        self.painter.eraseRect(0,0,600,400)
+        self.painter.end()
+        self.canvas.fill(Qt.black)
+        self.setPixmap(self.canvas)
+        self.update()
+    
 class CanvasWindow(QMainWindow):   #The Canvas Window
 
     def __init__(self,parent = None):
@@ -28,14 +36,24 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         grid.addWidget(self.canvas,0,1)
         Recognize = QPushButton('&Recognize', self)
         Clear = QPushButton('&Clear', self)
+        Clear.clicked.connect(self.canvas.Clear)
         Random = QPushButton('&Random', self)
         Model = QPushButton('&Model', self)
-        grid.addWidget(Recognize,0,2)
-        grid.addWidget(Clear,1,2)
-        grid.addWidget(Random,2,2)
-        grid.addWidget(Model,3,2)
+        menu = QMenu(self)
+        menu.addAction('Lenet Model')
+        Model.setMenu(menu)
+         
+        #Make 1 Widget for all the buttons
         
-
+        ButtonWidget = QWidget()
+        vbox = QVBoxLayout()
+        vbox.addWidget(Recognize)
+        vbox.addWidget(Model)
+        vbox.addWidget(Clear)
+        vbox.addWidget(Random)
+        ButtonWidget.setLayout(vbox)
+        vbox.addStretch(1)
+        grid.addWidget(ButtonWidget,0,2)
         self.setCentralWidget(canvas)    
         self.setWindowTitle('Canvas')
         self.setGeometry(300, 200, 800, 400)
