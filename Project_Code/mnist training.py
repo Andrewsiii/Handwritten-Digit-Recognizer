@@ -30,9 +30,9 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuff
 
 testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
 
-x, _ = trainset[7777] # x is now a torch.Tensor
-plt.imshow(x.numpy()[0])
-plt.show()
+# x, _ = trainset[7777] # x is now a torch.Tensor
+# plt.imshow(x.numpy()[0])
+# plt.show()
 
 from neural_network import LeNet5
 #from linear_network import Net
@@ -102,13 +102,15 @@ image = image.unsqueeze(1)
 # probabilities_before = torch.nn.functional.softmax(output)
 # print(probabilities_before)
 
-
+model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 test()
-for epoch in range (1, 16):
-    train(epoch)
-    test()
+# for epoch in range (1, 16):
+#     train(epoch)
+#     test()
+
+# torch.save(model.state_dict(), 'model_weights.pth')
 
 model.eval()
 output = model(image)
@@ -118,7 +120,7 @@ print(index)
 
 
 
-probabilities = torch.nn.functional.softmax(output)
+probabilities = torch.exp(torch.exp(output))
 print(probabilities)
 
 
