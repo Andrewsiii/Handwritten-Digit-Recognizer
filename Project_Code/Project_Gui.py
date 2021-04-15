@@ -10,11 +10,10 @@ class Canvas(QLabel):    #Canvas Widget itself
         canvas = QPixmap(600, 400)
         canvas.fill(Qt.black)
         self.setPixmap(canvas)
-        
     def mouseMoveEvent(self, e):
         painter = QPainter(self.pixmap())
         painter.setPen(QPen(Qt.white,  20))  #Change Pen thickness HERE increase number for thicker pen
-        painter.drawPoint(e.x(), e.y())
+        painter.drawPoint(e.x(), e.y())  #think u do canvas.save to save the widget as image. Will test later. it works like canvas.save("example.png")
         painter.end()
         self.update()
 class CanvasWindow(QMainWindow):   #The Canvas Window
