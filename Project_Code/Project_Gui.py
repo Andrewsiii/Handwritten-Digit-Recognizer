@@ -1,29 +1,59 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter
+from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath
+import mnist_training
+import neural_network
 
 class Canvas(QLabel):    #Canvas Widget itself
 
     def __init__(self):
         super().__init__()
-        self.canvas = QPixmap(600, 400)
-        self.canvas.fill(Qt.black)
-        self.setPixmap(self.canvas)
-    def mouseMoveEvent(self, e):
-        self.painter = QPainter(self.pixmap())
-        self.painter.setPen(QPen(Qt.white, 50))  #Change Pen thickness HERE increase number for thicker pen
-        self.painter.drawPoint(e.x(), e.y())  #think u do canvas.save to save the widget as image. Will test later. it works like canvas.save("example.png")
-        self.canvas.save('image.png')
-        self.painter.end()
+        self.setAttribute(Qt.WA_StaticContents)
+        h = 400
+        w = 400
+        self.myPenWidth = 45
+        self.myPenColor = Qt.white
+        self.image = QImage(w, h, QImage.Format_RGB32)
+        self.path = QPainterPath()
+        self.clearImage()
+
+    def setPenColor(self, newColor):
+        self.myPenColor = newColor
+
+    def setPenWidth(self, newWidth):
+        self.myPenWidth = newWidth
+
+    def clearImage(self):
+        self.path = QPainterPath()
+        self.image.fill(Qt.black)
         self.update()
-    def Clear(self):    #Clears the canvas
-        self.painter = QPainter(self.pixmap())
-        self.painter.eraseRect(0,0,600,400)
-        self.painter.end()
-        self.canvas.fill(Qt.black)
-        self.setPixmap(self.canvas)
+
+    def saveImage(self, fileName, fileFormat):
+        self.image.save(fileName, fileFormat)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.drawImage(event.rect(), self.image, self.rect())
+
+    def mousePressEvent(self, event):
+        self.path.moveTo(event.pos())
+
+    def mouseMoveEvent(self, event):
+        self.path.lineTo(event.pos())
+        p = QPainter(self.image)
+        p.setPen(QPen(self.myPenColor,
+                      self.myPenWidth, Qt.SolidLine, Qt.RoundCap,
+                      Qt.RoundJoin))
+        p.drawPath(self.path)
+        p.end()
         self.update()
+
+    def saveImage(self):
+        root_dir = 'C://Users//jhpau//'
+        self.image.save('data.png')
+        image = mnist_training.open_image(root_dir + 'data.png')
+        mnist_training.prediction(image)
     
 class CanvasWindow(QMainWindow):   #The Canvas Window
 
@@ -36,8 +66,10 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         canvas.setLayout(grid)
         grid.addWidget(self.canvas,0,1)
         Recognize = QPushButton('&Recognize', self)
+        Recognize.clicked.connect(self.canvas.saveImage)
+
         Clear = QPushButton('&Clear', self)
-        Clear.clicked.connect(self.canvas.Clear)
+        Clear.clicked.connect(self.canvas.clearImage)
         Random = QPushButton('&Random', self)
         Model = QPushButton('&Model', self)
         menu = QMenu(self)

@@ -72,7 +72,7 @@ def test():
           f'({100. * correct / len(testloader.dataset):.0f}%)')
 
 
-
+data_dir = 'C://Users//jhpau//testdata'
 test_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])
 
 def open_image(directory):
@@ -83,8 +83,8 @@ def open_image(directory):
     image = np.array(image)
     image = resize((image), (28,28), anti_aliasing= True)
 
-    plt.imshow(image)
-    plt.show()
+    # plt.imshow(image)
+    # plt.show()
 
     image = test_transforms(image).float()
     image = image.unsqueeze(1)
@@ -92,7 +92,7 @@ def open_image(directory):
     return image
 
 
-#model.load_state_dict(torch.load('model_weights.pth'))
+model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 def training_and_testing():
@@ -111,8 +111,34 @@ def prediction(image):
 
 
 
-    probabilities = torch.exp(torch.exp(output))
-    print(probabilities)
+    probabilities = torch.exp(output)
+    #print(probabilities)
+
+    
+    #output = output.detach().numpy()
+    #print(probabilities)
+    probabilities = probabilities.detach().numpy()
+    x = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    # x = np.arange(len(x_label))
+    # y = list(probabilities)
+    
+    #print(probabilities)
+    
+    y = np.append(probabilities[0,[0]], probabilities[0,[1]])
+    y = np.append(y, probabilities[0,[2]])
+    y = np.append(y, probabilities[0,[3]])
+    y = np.append(y, probabilities[0,[4]])
+    y = np.append(y, probabilities[0,[5]])
+    y = np.append(y, probabilities[0,[6]])
+    y = np.append(y, probabilities[0,[7]])
+    y = np.append(y, probabilities[0,[8]])
+    y = np.append(y, probabilities[0,[9]])
+    
+    plt.bar(x,y)
+    plt.xlabel('Digits')
+    plt.ylabel('probability')
+    plt.title('Classified Digit:' + str(index))
+    plt.show()
 
 def viewTrainDataset():
     y, _ = trainset[2]
@@ -125,3 +151,6 @@ def viewTestDataset():
     to_pil = transforms.ToPILImage()
     im = to_pil(x)
     im.show()
+
+# image = open_image('C://Users//jhpau//testdata/9/9.png')
+# prediction(image)
