@@ -4,7 +4,7 @@ This Handwritten Digit Recognizer is a GUI which will recognize numbers 0-9 when
 The installation will require the following libraries to use:
 PyQt5
 Pytorch
-scimage
+sckitmage
 
 ## Usage
 * insert image here
