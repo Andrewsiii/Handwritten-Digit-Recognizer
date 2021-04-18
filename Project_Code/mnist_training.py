@@ -92,7 +92,7 @@ def open_image(directory):
     return image
 
 
-model.load_state_dict(torch.load('model_weights.pth'))
+#model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 def training_and_testing():
