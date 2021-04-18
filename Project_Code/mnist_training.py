@@ -96,6 +96,8 @@ model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 def training_and_testing():
+    model.eval()
+    test()
     for epoch in range (1, 16):
         train(epoch)
         test()
@@ -107,7 +109,7 @@ def prediction(image):
     output = model(image)
 
     index = output.data.cpu().numpy().argmax()
-    print(index)
+    #print(index)
 
 
 
@@ -138,7 +140,8 @@ def prediction(image):
     plt.xlabel('Digits')
     plt.ylabel('probability')
     plt.title('Classified Digit:' + str(index))
-    plt.show()
+    #plt.show()
+    return x, y, index
 
 def viewTrainDataset():
     y, _ = trainset[2]
@@ -152,5 +155,9 @@ def viewTestDataset():
     im = to_pil(x)
     im.show()
 
+# model.eval()
+# test()
+# training_and_testing()
+# torch.save(model.state_dict(), 'model_weights.pth')
 # image = open_image('C://Users//jhpau//testdata/9/9.png')
 # prediction(image)

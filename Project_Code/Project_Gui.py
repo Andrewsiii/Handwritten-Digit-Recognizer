@@ -4,6 +4,29 @@ from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath
 import mnist_training
 import neural_network
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
+class Plot(FigureCanvas):
+    def __init__(self, parent):
+        fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
+        super().__init__(fig)
+        self.setParent(parent)
+
+        
+
+    def graph(self):
+        
+
+        root_dir = 'C://Users//jhpau//'
+        image = mnist_training.open_image(root_dir + 'data.png')
+        x, y, index = mnist_training.prediction(image)
+        
+        plt.bar(x,y)
+        plt.xlabel('Digits')
+        plt.ylabel('probability')
+        plt.title('Classified Digit: ' + str(index))
 
 class Canvas(QLabel):    #Canvas Widget itself
 
@@ -29,8 +52,7 @@ class Canvas(QLabel):    #Canvas Widget itself
         self.image.fill(Qt.black)
         self.update()
 
-    def saveImage(self, fileName, fileFormat):
-        self.image.save(fileName, fileFormat)
+
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -52,8 +74,7 @@ class Canvas(QLabel):    #Canvas Widget itself
     def saveImage(self):
         root_dir = 'C://Users//jhpau//'
         self.image.save('data.png')
-        image = mnist_training.open_image(root_dir + 'data.png')
-        mnist_training.prediction(image)
+        
     
 class CanvasWindow(QMainWindow):   #The Canvas Window
 
@@ -66,11 +87,14 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         canvas.setLayout(grid)
         grid.addWidget(self.canvas,0,1)
         Recognize = QPushButton('&Recognize', self)
-        Recognize.clicked.connect(self.canvas.saveImage)
+        self.new_window = Graph(self)
+        Recognize.clicked.connect(self.GraphShow)
 
         Clear = QPushButton('&Clear', self)
         Clear.clicked.connect(self.canvas.clearImage)
+
         Random = QPushButton('&Random', self)
+
         Model = QPushButton('&Model', self)
         menu = QMenu(self)
         menu.addAction('Lenet Model')
@@ -90,7 +114,31 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         self.setCentralWidget(canvas)    
         self.setWindowTitle('Canvas')
         self.setGeometry(300, 200, 800, 400)
+    
+    def GraphShow(self):
+        self.canvas.saveImage()
+        self.show_plot = Plot(self)
+        self.show_plot.graph()
+        self.new_window.show()
         
+
+
+
+class Graph(QMainWindow):  
+
+    def __init__(self,parent=None):
+        super(Graph,self).__init__(parent,Qt.Window)
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('Probability chart')
+        self.setGeometry(500, 50, 900, 900)
+        
+
+        chart = Plot(self)
+        chart.graph()
+        
+
         
 class MyApp(QMainWindow):   # The GUI ITSELF
 
@@ -121,7 +169,6 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         self.newwindow = CanvasWindow(self)
         DrawingCanvas.triggered.connect(self.CanvasClk)
 
-        
 
         self.statusBar().showMessage('Ready')
 
@@ -157,6 +204,7 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         dialog.show()
     def CanvasClk(self):
         self.newwindow.show()
+
 
     
 
