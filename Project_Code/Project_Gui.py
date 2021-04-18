@@ -7,7 +7,7 @@ import neural_network
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-
+import os 
 class Plot(FigureCanvas):
     def __init__(self, parent):
         fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
@@ -19,8 +19,9 @@ class Plot(FigureCanvas):
     def graph(self):
         
 
-        root_dir = 'C://Users//jhpau//'
-        image = mnist_training.open_image(root_dir + 'data.png')
+        root_dir = os.getcwd()
+        print(os.getcwd())
+        image = mnist_training.open_image(root_dir + '\\data.png')
         x, y, index = mnist_training.prediction(image)
         
         plt.bar(x,y)
@@ -72,7 +73,7 @@ class Canvas(QLabel):    #Canvas Widget itself
         self.update()
 
     def saveImage(self):
-        root_dir = 'C://Users//jhpau//'
+        root_dir = cwd = os.getcwd()
         self.image.save('data.png')
         
     
@@ -87,7 +88,6 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         canvas.setLayout(grid)
         grid.addWidget(self.canvas,0,1)
         Recognize = QPushButton('&Recognize', self)
-        self.new_window = Graph(self)
         Recognize.clicked.connect(self.GraphShow)
 
         Clear = QPushButton('&Clear', self)
@@ -119,8 +119,12 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         self.canvas.saveImage()
         self.show_plot = Plot(self)
         self.show_plot.graph()
-        self.new_window.show()
+        self.newwindow = Graph(self)
+        self.newwindow.show()
+    def RecognizeButton(self):
+        Graph(self)
         
+
 
 
 
