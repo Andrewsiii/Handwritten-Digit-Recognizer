@@ -161,3 +161,7 @@ def viewTestDataset():
 # torch.save(model.state_dict(), 'model_weights.pth')
 # image = open_image('C://Users//jhpau//testdata/9/9.png')
 # prediction(image)
+model.eval()
+test()
+training_and_testing()
+torch.save(model.state_dict(), 'model_weights.pth')
