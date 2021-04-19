@@ -13,7 +13,7 @@ from skimage.transform import rescale, resize, downscale_local_mean
 from skimage import io; io.use_plugin('matplotlib')
 from skimage import data, io, filters
 from PIL import Image, ImageOps
-
+import os
 #training settings
 batch_size = 64 
 
@@ -71,8 +71,8 @@ def test():
     print(f'===========================\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(testloader.dataset)} '
           f'({100. * correct / len(testloader.dataset):.0f}%)')
 
-
-data_dir = 'C://Users//jhpau//testdata'
+working_dir = os.getcwd()
+data_dir = (working_dir + '\\testdata')
 test_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])
 
 def open_image(directory):
@@ -92,7 +92,7 @@ def open_image(directory):
     return image
 
 
-#model.load_state_dict(torch.load('model_weights.pth'))
+model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 def training_and_testing():
@@ -161,7 +161,3 @@ def viewTestDataset():
 # torch.save(model.state_dict(), 'model_weights.pth')
 # image = open_image('C://Users//jhpau//testdata/9/9.png')
 # prediction(image)
-model.eval()
-test()
-training_and_testing()
-torch.save(model.state_dict(), 'model_weights.pth')
