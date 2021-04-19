@@ -1,6 +1,7 @@
 from __future__ import print_function
 import torch
 import torchvision
+from torchvision.datasets import MNIST
 from torch import nn, optim, cuda
 from torch.utils import data
 from torchvision import datasets, transforms

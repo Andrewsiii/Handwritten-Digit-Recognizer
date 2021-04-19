@@ -20,7 +20,6 @@ class Plot(FigureCanvas):
         
 
         root_dir = os.getcwd()
-        print(os.getcwd())
         image = mnist_training.open_image(root_dir + '\\data.png')
         x, y, index = mnist_training.prediction(image)
         
