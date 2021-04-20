@@ -6,6 +6,7 @@ import mnist_training
 import neural_network
 import numpy as np
 import matplotlib.pyplot as plt
+from torchvision.datasets import MNIST
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import os 
 class Plot(FigureCanvas):
@@ -18,9 +19,10 @@ class Plot(FigureCanvas):
 
     def graph(self):
         
-
         root_dir = os.getcwd()
         image = mnist_training.open_image(root_dir + '\\data.png')
+        mnist_training.Initial()
+        mnist_training.Loading()
         x, y, index = mnist_training.prediction(image)
         
         plt.bar(x,y)
@@ -194,10 +196,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         grid = QGridLayout()
         dialog.setLayout(grid)
         btn1 = QPushButton('&Download MNIST', self)
-        
+        btn1.clicked.connect(MyApp.MNIST_Download)
         btn2 = QPushButton(self)
         btn2.setText('Train')
-
+        btn2.clicked.connect(mnist_training.TrainingButton)
         btn3 = QPushButton('cancel', self)
         btn3.clicked.connect(dialog.close)
         
@@ -207,10 +209,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         dialog.show()
     def CanvasClk(self):
         self.newwindow.show()
-
-
+    def MNIST_Download(self):
+        dataset = MNIST(root='', download=True)
     
-
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()

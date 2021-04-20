@@ -1,7 +1,6 @@
 from __future__ import print_function
 import torch
 import torchvision
-from torchvision.datasets import MNIST
 from torch import nn, optim, cuda
 from torch.utils import data
 from torchvision import datasets, transforms
@@ -20,16 +19,11 @@ batch_size = 64
 
 
 #Mnist dataset
-trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+def Initial():
+    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 
 
-testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
-    
-
-#Data loader
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
-
-testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 
 
 from neural_network import LeNet5
@@ -44,6 +38,9 @@ optimizer = optim.SGD(model.parameters(), lr=0.00035, momentum=0.5)
 #training function
 def train(epoch):
     model.train()
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+
+    testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
     for batch_idx, (data, target) in enumerate(trainloader):
         optimizer.zero_grad()
         output = model(data)
@@ -92,8 +89,8 @@ def open_image(directory):
 
     return image
 
-
-model.load_state_dict(torch.load('model_weights.pth'))
+def Loading():
+    model.load_state_dict(torch.load('model_weights.pth'))
 
 #running the training
 def training_and_testing():
@@ -155,10 +152,10 @@ def viewTestDataset():
     to_pil = transforms.ToPILImage()
     im = to_pil(x)
     im.show()
-
-# model.eval()
-# test()
-# training_and_testing()
-# torch.save(model.state_dict(), 'model_weights.pth')
+def TrainingButton():
+    model.eval()
+    test()
+    training_and_testing()
+    torch.save(model.state_dict(), 'model_weights.pth')
 # image = open_image('C://Users//jhpau//testdata/9/9.png')
 # prediction(image)
