@@ -148,12 +148,6 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
             ErrorBox.buttonClicked.connect(ErrorBox.close)
             ErrorBox.exec() 
         
-       
-        
-        
-
-
-
 
 class Graph(QMainWindow):  
 
@@ -236,7 +230,16 @@ class MyApp(QMainWindow):   # The GUI ITSELF
     def CanvasClk(self):
         self.newwindow.show()
     def MNIST_Download(self):
-        dataset = MNIST(root='', download=True)
+        if(path.exists("MNIST") == True):
+            ErrorBox = QMessageBox()
+            ErrorBox.setIcon(QMessageBox.Information)
+            ErrorBox.setText("Error: MNIST already downloaded")
+            ErrorBox.setWindowTitle("Error")
+            ErrorBox.setStandardButtons(QMessageBox.Ok)
+            ErrorBox.buttonClicked.connect(ErrorBox.close)
+            ErrorBox.exec()
+        else:
+            dataset = MNIST(root='', download=True)
     
     
 if __name__ == '__main__':
