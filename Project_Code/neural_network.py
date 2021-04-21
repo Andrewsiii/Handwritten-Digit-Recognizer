@@ -20,13 +20,10 @@ class LeNet5(nn.Module):
 
     def forward(self, input):
         out = self.conv1(input)
-        out = self.batchnorm1(out)
         out = self.relu(out)
-        #out = self.dropout(out)
         out = self.avepooling(out)
 
         out = self.conv2(out)
-        out = self.batchnorm2(out)
         out = self.relu(out)
         out = self.dropout(out)
         out = self.avepooling(out)
