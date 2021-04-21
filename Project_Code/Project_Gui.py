@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from torchvision.datasets import MNIST
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import os 
+from os import path
 class Plot(FigureCanvas):
     def __init__(self, parent):
         fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
@@ -82,7 +83,6 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
 
     def __init__(self,parent = None):
         super(CanvasWindow,self).__init__(parent,Qt.Window)
-
         self.canvas = Canvas()
         canvas = QWidget()
         grid =QGridLayout()
@@ -117,13 +117,39 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         self.setGeometry(300, 200, 800, 400)
     
     def GraphShow(self):
-        self.canvas.saveImage()
-        self.show_plot = Plot(self)
-        self.show_plot.graph()
-        self.newwindow = Graph(self)
-        self.newwindow.show()
-    def RecognizeButton(self):
-        Graph(self)
+        if(path.exists("model_weights.pth") == True) and (path.exists("MNIST") == True):
+            self.canvas.saveImage()
+            self.show_plot = Plot(self)
+            self.show_plot.graph()
+            self.newwindow = Graph(self)
+            self.newwindow.show()
+        elif (path.exists("model_weights.pth") == False) and (path.exists("MNIST") == False):
+            ErrorBox = QMessageBox()
+            ErrorBox.setIcon(QMessageBox.Information)
+            ErrorBox.setText("Error: Please Download MNIST and then train the model")
+            ErrorBox.setWindowTitle("Error")
+            ErrorBox.setStandardButtons(QMessageBox.Ok)
+            ErrorBox.buttonClicked.connect(ErrorBox.close)
+            ErrorBox.exec()  
+        elif(path.exists("model_weights.pth") == True) and (path.exists("MNIST") == False):
+            ErrorBox = QMessageBox()
+            ErrorBox.setIcon(QMessageBox.Information)
+            ErrorBox.setText("Error: Please Download MNIST first")
+            ErrorBox.setWindowTitle("Error")
+            ErrorBox.setStandardButtons(QMessageBox.Ok)
+            ErrorBox.buttonClicked.connect(ErrorBox.close)
+            ErrorBox.exec()
+        else:
+            ErrorBox = QMessageBox()
+            ErrorBox.setIcon(QMessageBox.Information)
+            ErrorBox.setText("Error: Please train the model first")
+            ErrorBox.setWindowTitle("Error")
+            ErrorBox.setStandardButtons(QMessageBox.Ok)
+            ErrorBox.buttonClicked.connect(ErrorBox.close)
+            ErrorBox.exec() 
+        
+       
+        
         
 
 
@@ -180,8 +206,8 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         menubar = self.menuBar()
         filemenu = menubar.addMenu('&File')
         filemenu.addAction(TrainModel)
-        filemenu.addAction(exitAction)
         filemenu.addAction(DrawingCanvas)
+        filemenu.addAction(exitAction)
         viewmenu = menubar.addMenu('&View')
         viewmenu.addAction(viewTrainingImages)
         viewmenu.addAction(viewTestingImages)
