@@ -22,7 +22,7 @@ class Plot(FigureCanvas):
         
         root_dir = os.getcwd()
         image = mnist_training.open_image(root_dir + '\\data.png')
-        mnist_training.Initial()
+        #mnist_training.Initial()
         mnist_training.Loading()
         x, y, index = mnist_training.prediction(image)
         

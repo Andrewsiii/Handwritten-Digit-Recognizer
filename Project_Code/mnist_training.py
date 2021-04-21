@@ -19,12 +19,21 @@ batch_size = 64
 
 
 #Mnist dataset
-def Initial():
-    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+# def Initial():
+#     trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 
 
-    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+#     testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+#     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
+#     testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
+trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+
+
+testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+
+testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
 
 from neural_network import LeNet5
 #from linear_network import Net
@@ -38,9 +47,9 @@ optimizer = optim.SGD(model.parameters(), lr=0.00035, momentum=0.5)
 #training function
 def train(epoch):
     model.train()
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+    # trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
-    testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
+    # testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
     for batch_idx, (data, target) in enumerate(trainloader):
         optimizer.zero_grad()
         output = model(data)
