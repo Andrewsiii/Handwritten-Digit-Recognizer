@@ -30,14 +30,15 @@ class ViewTrainingData(QLabel):
         self.button1 = QPushButton("show next", self)
         self.button1.setGeometry(300,235,100,30)
         self.button1.clicked.connect(self.display_next)
-        self.button2 = QPushButton("load next", self)
-        self.button2.setGeometry(300,200,100,30)
-        self.button2.clicked.connect(self.load_next)
-        self.load_next()
+
         self.display_next()  
 
     
     def display_next(self):
+        y, _ = self.data[self.k]
+        to_pil = transforms.ToPILImage()
+        image = to_pil(y)
+        image.save('training_image.png')
         root_dir = os.getcwd()
         grid = QGridLayout()
         self.label.setLayout(grid)
@@ -45,13 +46,8 @@ class ViewTrainingData(QLabel):
         pixmap = pixmap.scaledToWidth(300)
         self.label.setPixmap(pixmap)
         self.label.setGeometry(0,0,300,300)
-
-    def load_next(self):
-        y, _ = self.data[self.k]
-        to_pil = transforms.ToPILImage()
-        image = to_pil(y)
-        image.save('training_image.png')
         self.k = self.k + 1
+
 
         
 class ViewTestingData(QLabel):
@@ -72,14 +68,14 @@ class ViewTestingData(QLabel):
         self.button1 = QPushButton("show next", self)
         self.button1.setGeometry(300,235,100,30)
         self.button1.clicked.connect(self.display_next)
-        self.button2 = QPushButton("load next", self)
-        self.button2.setGeometry(300,200,100,30)
-        self.button2.clicked.connect(self.load_next)
-        self.load_next()
         self.display_next()  
 
     
     def display_next(self):
+        y, _ = self.data[self.k]
+        to_pil = transforms.ToPILImage()
+        image = to_pil(y)
+        image.save('testing_image.png')
         root_dir = os.getcwd()
         grid = QGridLayout()
         self.label.setLayout(grid)
@@ -87,13 +83,7 @@ class ViewTestingData(QLabel):
         pixmap = pixmap.scaledToWidth(300)
         self.label.setPixmap(pixmap)
         self.label.setGeometry(0,0,300,300)
-
-    def load_next(self):
-        y, _ = self.data[self.k]
-        to_pil = transforms.ToPILImage()
-        image = to_pil(y)
-        image.save('testing_image.png')
-        self.k = self.k + 1    
+        self.k = self.k + 1 
 
 class Plot(FigureCanvas):
     def __init__(self, parent):
