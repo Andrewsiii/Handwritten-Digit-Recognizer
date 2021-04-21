@@ -6,10 +6,95 @@ import mnist_training
 import neural_network
 import numpy as np
 import matplotlib.pyplot as plt
-from torchvision.datasets import MNIST
+from torchvision import datasets, transforms
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import os 
 from os import path
+
+
+class ViewTrainingData(QLabel):
+    
+    def __init__(self):
+        super().__init__()
+        self.title = 'Training Images'
+
+        self.initUI()
+    
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(800,300,400,300)
+        self.label = QLabel(self)
+        self.data = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+        self.k = 0
+
+        self.button1 = QPushButton("show next", self)
+        self.button1.setGeometry(300,235,100,30)
+        self.button1.clicked.connect(self.display_next)
+        self.button2 = QPushButton("load next", self)
+        self.button2.setGeometry(300,200,100,30)
+        self.button2.clicked.connect(self.load_next)
+        self.load_next()
+        self.display_next()  
+
+    
+    def display_next(self):
+        root_dir = os.getcwd()
+        grid = QGridLayout()
+        self.label.setLayout(grid)
+        pixmap = QPixmap(root_dir + '\\training_image.png')
+        pixmap = pixmap.scaledToWidth(300)
+        self.label.setPixmap(pixmap)
+        self.label.setGeometry(0,0,300,300)
+
+    def load_next(self):
+        y, _ = self.data[self.k]
+        to_pil = transforms.ToPILImage()
+        image = to_pil(y)
+        image.save('training_image.png')
+        self.k = self.k + 1
+
+        
+class ViewTestingData(QLabel):
+    
+    def __init__(self):
+        super().__init__()
+        self.title = 'Testing Images'
+
+        self.initUI()
+    
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(800,300,400,300)
+        self.label = QLabel(self)
+        self.data = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+        self.k = 0
+
+        self.button1 = QPushButton("show next", self)
+        self.button1.setGeometry(300,235,100,30)
+        self.button1.clicked.connect(self.display_next)
+        self.button2 = QPushButton("load next", self)
+        self.button2.setGeometry(300,200,100,30)
+        self.button2.clicked.connect(self.load_next)
+        self.load_next()
+        self.display_next()  
+
+    
+    def display_next(self):
+        root_dir = os.getcwd()
+        grid = QGridLayout()
+        self.label.setLayout(grid)
+        pixmap = QPixmap(root_dir + '\\testing_image.png')
+        pixmap = pixmap.scaledToWidth(300)
+        self.label.setPixmap(pixmap)
+        self.label.setGeometry(0,0,300,300)
+
+    def load_next(self):
+        y, _ = self.data[self.k]
+        to_pil = transforms.ToPILImage()
+        image = to_pil(y)
+        image.save('testing_image.png')
+        self.k = self.k + 1    
+
 class Plot(FigureCanvas):
     def __init__(self, parent):
         fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
@@ -22,7 +107,7 @@ class Plot(FigureCanvas):
         
         root_dir = os.getcwd()
         image = mnist_training.open_image(root_dir + '\\data.png')
-        #mnist_training.Initial()
+        mnist_training.Initial()
         mnist_training.Loading()
         x, y, index = mnist_training.prediction(image)
         
@@ -36,9 +121,9 @@ class Canvas(QLabel):    #Canvas Widget itself
     def __init__(self):
         super().__init__()
         self.setAttribute(Qt.WA_StaticContents)
-        h = 400
-        w = 400
-        self.myPenWidth = 45
+        h = 375
+        w = 375
+        self.myPenWidth = 60
         self.myPenColor = Qt.white
         self.image = QImage(w, h, QImage.Format_RGB32)
         self.path = QPainterPath()
@@ -185,9 +270,13 @@ class MyApp(QMainWindow):   # The GUI ITSELF
 
         viewTrainingImages = QAction ('View Training Images', self)
         viewTrainingImages.setStatusTip('View the training images')  #to test use triggered function like drawing canvas
+        self.view_training = ViewTrainingData()
+        viewTrainingImages.triggered.connect(self.view_training.show)
 
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
+        self.view_testing = ViewTestingData()
+        viewTestingImages.triggered.connect(self.view_testing.show)
 
         DrawingCanvas = QAction('Drawing Canvas',self)
         DrawingCanvas.setStatusTip('View the testing images')
@@ -239,7 +328,7 @@ class MyApp(QMainWindow):   # The GUI ITSELF
             ErrorBox.buttonClicked.connect(ErrorBox.close)
             ErrorBox.exec()
         else:
-            dataset = MNIST(root='', download=True)
+            dataset = datasets.MNIST(root='', download=True)
     
     
 if __name__ == '__main__':

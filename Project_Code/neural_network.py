@@ -28,7 +28,7 @@ class LeNet5(nn.Module):
         out = self.conv2(out)
         out = self.batchnorm2(out)
         out = self.relu(out)
-        #out = self.dropout(out)
+        out = self.dropout(out)
         out = self.avepooling(out)
 
         out = out.view(out.size(0), -1)
@@ -40,6 +40,7 @@ class LeNet5(nn.Module):
 
         out  = self.fc2(out)
         out = self.relu(out)
+
 
         out = self.fc3(out)
         out = self.softmax(out)

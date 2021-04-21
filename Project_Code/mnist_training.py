@@ -19,37 +19,36 @@ batch_size = 64
 
 
 #Mnist dataset
-# def Initial():
-#     trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+def Initial():
+    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 
 
-#     testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
-#     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
 
-#     testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
-trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
 
-
-testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
-
-testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
 
 from neural_network import LeNet5
-#from linear_network import Net
+
 
 #initialisations
 model = LeNet5()
-#model = Net()
+
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.00035, momentum=0.5)
 
 #training function
 def train(epoch):
-    model.train()
-    # trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 
-    # testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
+
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+
+    testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
+    model.train()
+
     for batch_idx, (data, target) in enumerate(trainloader):
         optimizer.zero_grad()
         output = model(data)
@@ -63,6 +62,13 @@ def train(epoch):
 
 #testing function
 def test():
+    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+
+
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
+
+    testloader = torch.utils.data.DataLoader(testset, batch_size= batch_size, shuffle=True)
     model.eval()
     test_loss = 0
     correct = 0
@@ -83,15 +89,14 @@ data_dir = (working_dir + '\\testdata')
 test_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])
 
 def open_image(directory):
-    #directory = 'C://Users//jhpau//testdata/5/5'
+
     image = Image.open(directory)
 
     image = ImageOps.grayscale(image)
     image = np.array(image)
     image = resize((image), (28,28), anti_aliasing= True)
 
-    # plt.imshow(image)
-    # plt.show()
+
 
     image = test_transforms(image).float()
     image = image.unsqueeze(1)
@@ -104,12 +109,11 @@ def Loading():
 #running the training
 def training_and_testing():
     model.eval()
-    test()
-    for epoch in range (1, 16):
+    for epoch in range (1, 21):
         train(epoch)
         test()
 
-# torch.save(model.state_dict(), 'model_weights.pth')
+
 
 def prediction(image):
     model.eval()
@@ -150,21 +154,24 @@ def prediction(image):
     #plt.show()
     return x, y, index
 
-def viewTrainDataset():
-    y, _ = trainset[2]
+def viewTrainDataset(i):
+    trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    
+    y, _ = trainset[i]
     to_pil = transforms.ToPILImage()
     image = to_pil(y)
-    image.show()
+    image.save('training_image.png')
 
-def viewTestDataset():
-    x, _ = testset[0]
+def viewTestDataset(j):
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    
+    x, _ = testset[j]
     to_pil = transforms.ToPILImage()
     im = to_pil(x)
-    im.show()
+    im.save('testing_image.png')
 def TrainingButton():
     model.eval()
     test()
     training_and_testing()
-    torch.save(model.state_dict(), 'model_weights.pth')
-# image = open_image('C://Users//jhpau//testdata/9/9.png')
-# prediction(image)
+    #torch.save(model.state_dict(), 'model_weights.pth')
+
