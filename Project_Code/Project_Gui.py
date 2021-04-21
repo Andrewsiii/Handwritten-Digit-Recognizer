@@ -270,13 +270,13 @@ class MyApp(QMainWindow):   # The GUI ITSELF
 
         viewTrainingImages = QAction ('View Training Images', self)
         viewTrainingImages.setStatusTip('View the training images')  #to test use triggered function like drawing canvas
-        self.view_training = ViewTrainingData()
-        viewTrainingImages.triggered.connect(self.view_training.show)
+        #self.view_training = ViewTrainingData()
+        viewTrainingImages.triggered.connect(self.view_training)
 
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
-        self.view_testing = ViewTestingData()
-        viewTestingImages.triggered.connect(self.view_testing.show)
+        #self.view_testing = ViewTestingData()
+        viewTestingImages.triggered.connect(self.view_testing)
 
         DrawingCanvas = QAction('Drawing Canvas',self)
         DrawingCanvas.setStatusTip('View the testing images')
@@ -329,6 +329,13 @@ class MyApp(QMainWindow):   # The GUI ITSELF
             ErrorBox.exec()
         else:
             dataset = datasets.MNIST(root='', download=True)
+
+    def view_training(self):
+        self.train = ViewTrainingData()
+        self.train.show()
+    def view_testing(self):
+        self.test = ViewTestingData()
+        self.test.show()
     
     
 if __name__ == '__main__':
