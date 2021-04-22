@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu, QProgressBar
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath
 import mnist_training
@@ -305,6 +305,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         grid.addWidget(btn1,3,1)
         grid.addWidget(btn2,3,2)
         grid.addWidget(btn3,3,3)
+        self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 40, 200, 25)
+        self.pbar.setFormat('0')
+        grid.addWidget(self.pbar,2,2)
         dialog.show()
     def CanvasClk(self):
         self.newwindow.show()
