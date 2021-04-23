@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu
-from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu, QTabWidget, QMdiArea, QSizePolicy
+from PyQt5.QtCore import QCoreApplication, Qt, QProcess
+from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath, QFont
 import mnist_training
 import neural_network
 import numpy as np
@@ -10,6 +10,7 @@ from torchvision import datasets, transforms
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import os 
 from os import path
+
 
 
 class ViewTrainingData(QLabel):
@@ -252,6 +253,14 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(qApp.quit)
 
+        self.lbl = QLabel('    Handwritten Digit\nRecognition Programme', self)
+        self.lbl.setGeometry(200, 150,600,300)
+        self.lbl.setFont(QFont('Times font',20, italic = False))
+
+        self.lbl2 = QLabel('by Paul Kim & Andrew Sio\nCompsys 302 2021', self)
+        self.lbl2.setGeometry(580, 390,600,300)
+        self.lbl2.setFont(QFont('Times font',8, italic = True))
+
         TrainModel = QAction ('Train Model', self)
         TrainModel.setShortcut('Ctrl+T')
         TrainModel.setStatusTip('Train the model')
@@ -287,6 +296,7 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         self.setWindowTitle('Handwritten Digit Recognizer')
         self.setGeometry(300, 200, 800, 600)
         self.show()
+
 
     def OpenWindow(self):   #This function is for the dialog box when Train model is pressed. Need to update
         dialog = QDialog(self)
