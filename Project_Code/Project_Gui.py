@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import os 
+import torch
 from os import path
 
 
@@ -25,7 +26,9 @@ class ViewTrainingData(QLabel):
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
+        self.label1 = QLabel(self)
         self.data = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+        self.digit = torch.utils.data.DataLoader(self.data, shuffle=False)
         self.k = 0
 
         self.button1 = QPushButton("show next", self)
@@ -37,6 +40,8 @@ class ViewTrainingData(QLabel):
     
     def display_next(self):
         y, _ = self.data[self.k]
+        self.string = str(self.digit.dataset.targets[self.k])
+        self.string1 = self.string.replace('tensor', '')
         to_pil = transforms.ToPILImage()
         image = to_pil(y)
         image.save('training_image.png')
@@ -47,6 +52,9 @@ class ViewTrainingData(QLabel):
         pixmap = pixmap.scaledToWidth(300)
         self.label.setPixmap(pixmap)
         self.label.setGeometry(0,0,300,300)
+        self.label1.setText(self.string1)
+        self.label1.setFont(QFont('Times font',20, italic = False))
+        self.label1.setGeometry(300,0,50,50)
         self.k = self.k + 1
 
 
@@ -63,7 +71,9 @@ class ViewTestingData(QLabel):
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
+        self.label1 = QLabel(self)
         self.data = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+        self.digit = torch.utils.data.DataLoader(self.data, shuffle=False)
         self.k = 0
 
         self.button1 = QPushButton("show next", self)
@@ -74,6 +84,8 @@ class ViewTestingData(QLabel):
     
     def display_next(self):
         y, _ = self.data[self.k]
+        self.string = str(self.digit.dataset.targets[self.k])
+        self.string1 = self.string.replace('tensor', '')
         to_pil = transforms.ToPILImage()
         image = to_pil(y)
         image.save('testing_image.png')
@@ -84,6 +96,9 @@ class ViewTestingData(QLabel):
         pixmap = pixmap.scaledToWidth(300)
         self.label.setPixmap(pixmap)
         self.label.setGeometry(0,0,300,300)
+        self.label1.setText(self.string1)
+        self.label1.setFont(QFont('Times font',20, italic = False))
+        self.label1.setGeometry(300,0,50,50)
         self.k = self.k + 1 
 
 class Plot(FigureCanvas):

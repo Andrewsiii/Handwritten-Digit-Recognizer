@@ -176,4 +176,6 @@ def TrainingButton():
     torch.save(model.state_dict(), 'model_weights.pth')
 
 
-
+# trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+# trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=False)
+# print(trainloader.dataset.targets[0])
