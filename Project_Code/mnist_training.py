@@ -14,6 +14,7 @@ from skimage import io; io.use_plugin('matplotlib')
 from skimage import data, io, filters
 from PIL import Image, ImageOps
 import os
+import Project_Gui
 #training settings
 batch_size = 64 
 
@@ -36,7 +37,7 @@ from neural_network import LeNet5
 model = LeNet5()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.00035, momentum=0.5)
+optimizer = optim.SGD(model.parameters(), lr=0.003, momentum=0.5)
 
 #training function
 def train(epoch):
@@ -58,7 +59,7 @@ def train(epoch):
         if batch_idx % 10 == 0:
             print('Train Epoch: {} | Batch Status: {}/{} ({:.0f}%) | Loss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(trainloader.dataset),
-                100. * batch_idx / len(trainloader), loss.item()))
+                100. * batch_idx / len(trainloader), loss.item()))   
 
 #testing function
 def test():
@@ -109,10 +110,9 @@ def Loading():
 #running the training
 def training_and_testing():
     model.eval()
-    for epoch in range (1, 21):
+    for epoch in range (1, 11):
         train(epoch)
         test()
-
 
 
 def prediction(image):
@@ -173,5 +173,7 @@ def TrainingButton():
     model.eval()
     test()
     training_and_testing()
-    #torch.save(model.state_dict(), 'model_weights.pth')
+    torch.save(model.state_dict(), 'model_weights.pth')
+
+
 

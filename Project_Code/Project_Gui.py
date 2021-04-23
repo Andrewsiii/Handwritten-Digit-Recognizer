@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu, QTabWidget, QMdiArea, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp, QMessageBox, QDialog, QGridLayout, QPushButton, QLineEdit, QTextEdit, QLabel,QVBoxLayout,QWidget,QHBoxLayout, QMenu, QTabWidget, QMdiArea, QSizePolicy, QProgressBar, QTextBrowser
 from PyQt5.QtCore import QCoreApplication, Qt, QProcess
 from PyQt5.QtGui import QIcon, QPen, QPixmap, QPainter, QImage, QPainterPath, QFont
 import mnist_training
@@ -301,7 +301,7 @@ class MyApp(QMainWindow):   # The GUI ITSELF
     def OpenWindow(self):   #This function is for the dialog box when Train model is pressed. Need to update
         dialog = QDialog(self)
         dialog.setWindowTitle('Train Model')
-        dialog.setGeometry(300, 300, 300, 200)
+        dialog.setGeometry(300, 300, 900, 500)
         grid = QGridLayout()
         dialog.setLayout(grid)
         btn1 = QPushButton('&Download MNIST', self)
@@ -312,13 +312,19 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         btn3 = QPushButton('cancel', self)
         btn3.clicked.connect(dialog.close)
         
-        grid.addWidget(btn1,3,1)
-        grid.addWidget(btn2,3,2)
-        grid.addWidget(btn3,3,3)
+        self.tb = QTextBrowser()
+        self.tb.setAcceptRichText(True)
+        self.tb.setOpenExternalLinks(True)
+        grid.addWidget(self.tb,2,2)
+        self.tb.append('click to start download or training')
+
+        grid.addWidget(btn1,4,1)
+        grid.addWidget(btn2,4,2)
+        grid.addWidget(btn3,4,3)
         self.pbar = QProgressBar(self)
-        self.pbar.setGeometry(30, 40, 200, 25)
+        self.pbar.setGeometry(30, 240, 500, 25)
         self.pbar.setFormat('0')
-        grid.addWidget(self.pbar,2,2)
+        grid.addWidget(self.pbar,3,2)
         dialog.show()
     def CanvasClk(self):
         self.newwindow.show()
