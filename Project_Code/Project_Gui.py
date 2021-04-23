@@ -315,6 +315,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         grid.addWidget(btn1,3,1)
         grid.addWidget(btn2,3,2)
         grid.addWidget(btn3,3,3)
+        self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 40, 200, 25)
+        self.pbar.setFormat('0')
+        grid.addWidget(self.pbar,2,2)
         dialog.show()
     def CanvasClk(self):
         self.newwindow.show()
