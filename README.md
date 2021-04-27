@@ -4,11 +4,11 @@ This Handwritten Digit Recognizer is a GUI which will recognize numbers 0-9 when
 The installation requirements are written under requirements.txt.Please download these libraries before running this project.
 
 Note:
-Please ensure the current working directory is the same as where the project files are.
+Please ensure the current working directory is the same as where the project files are. The MNIST dataset will be downloaded to the current working directory
 
 ## Usage
 
-First, run the ProjectGUI.py file  
+First, run the Project_GUI.py file  
 
 When the code is run, the user will see a Main Window as show below.
 
@@ -23,6 +23,12 @@ This is the train Model window. It is here in which the user will be able to dow
 A canvas window should appear like the one below.
 
 ![image](https://user-images.githubusercontent.com/68887738/116237155-f9640b80-a7b3-11eb-8e9d-4fb2d5b2bfe9.png)
+
+The user will be able to draw any digit between 0-9 on the canvas on the left of the window. Once done, the user can press recognize and the program will recognize the digit. If done correctly there should be no error messages. However, if the model is not trained or the MNIST dataset is not downloaded the error messages will appear. Please refer to the instructions for the train model window. 
+
+The image below shows result if done correctly.
+
+
 
 * The DNN model can be found under the project Code
 
