@@ -3,12 +3,14 @@ This Handwritten Digit Recognizer is a GUI which will recognize numbers 0-9 when
 ## Installation
 The installation requirements are written under requirements.txt.Please download these libraries before running this project.
 
-##Note:
+Note:
 Please ensure the current working directory is the same as where the project files are.
 
 ## Usage
 
-First, run the ProjectGUI.py file  When the code is run, the user will see a Main Window as show below.
+First, run the ProjectGUI.py file  
+
+When the code is run, the user will see a Main Window as show below.
 
 ![image](https://user-images.githubusercontent.com/68887738/116235621-33cca900-a7b2-11eb-99a4-7826961d27e7.png)
 
