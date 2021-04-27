@@ -1,7 +1,7 @@
 
 The required Libraries to use this program are listed below
 
--PyQt5 5.15.3
+- PyQt5 5.15.3
 - scikit-image  0.18.1
 - torch/pytorch 1.8.1
 - matplotlib 3.4.1
