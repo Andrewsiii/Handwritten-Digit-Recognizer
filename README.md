@@ -18,6 +18,11 @@ The User will first go into the main menu bar under file -> train model. A windo
 
 ![image](https://user-images.githubusercontent.com/68887738/116236247-f0266f00-a7b2-11eb-9c61-75d91c98ef0c.png)
 
-This is the train Model window. It is here in which the user will be able to 
+This is the train Model window. It is here in which the user will be able to download the MNIST dataset and also train the model for the GUI to use to recognize the digits written in the canvas. Once both have been completed, the user may open up the Canvas window found under the the file menubar in the main window under drawing canvas.
+
+A canvas window should appear like the one below.
+
+![image](https://user-images.githubusercontent.com/68887738/116237155-f9640b80-a7b3-11eb-8e9d-4fb2d5b2bfe9.png)
+
 * The DNN model can be found under the project Code
 
