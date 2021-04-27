@@ -32,7 +32,7 @@ The image below shows result if done correctly.
 
 This probability chart will show the probability of each digit and also show what digit it has recognized from the user canvas
 
+##DNN MODEL
 
-
-* The DNN model can be found under the project Code
+The DNN model can be found under the project Code
 
