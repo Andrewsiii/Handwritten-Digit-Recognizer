@@ -26,9 +26,11 @@ A canvas window should appear like the one below.
 
 The user will be able to draw any digit between 0-9 on the canvas on the left of the window. Once done, the user can press recognize and the program will recognize the digit. If done correctly there should be no error messages. However, if the model is not trained or the MNIST dataset is not downloaded the error messages will appear. Please refer to the instructions for the train model window. 
 
+The image below shows result if done correctly.
+
 ![image](https://user-images.githubusercontent.com/68887738/116257240-fc68f700-a7c7-11eb-9d42-b32002ea77f2.png)
 
-The image below shows result if done correctly.
+This probability chart will show the probability of each digit and also show what digit it has recognized from the user canvas
 
 
 
