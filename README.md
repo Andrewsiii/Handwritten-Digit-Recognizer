@@ -32,6 +32,12 @@ The image below shows result if done correctly.
 
 This probability chart will show the probability of each digit and also show what digit it has recognized from the user canvas
 
+## Image viewer
+Another feature that our GUI includes is that it can show the images within the MNIST dataset. This feature can be found in the main window under view menubar. The user will have the option of choosing viewing either the testing images or the training images. A image viewer window will appear and show the digit and the user will be able to browse using the show next button. The image viewer is shown below.
+
+![image](https://user-images.githubusercontent.com/68887738/116258358-fd4e5880-a7c8-11eb-90a7-6d8efa1e5efe.png)
+
+
 ## DNN MODEL
 
 The DNN model can be found under the project Code
