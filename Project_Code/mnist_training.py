@@ -73,6 +73,7 @@ def test():
     model.eval()
     test_loss = 0
     correct = 0
+
     for data, target in testloader:
         output = model(data)
         # sum up batch loss
@@ -81,9 +82,12 @@ def test():
         pred = output.data.max(1, keepdim=True)[1]
         correct += pred.eq(target.data.view_as(pred)).cpu().sum()
 
+
+
     test_loss /= len(testloader.dataset)
     print(f'===========================\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(testloader.dataset)} '
           f'({100. * correct / len(testloader.dataset):.0f}%)')
+
 
 working_dir = os.getcwd()
 data_dir = (working_dir + '\\testdata')
@@ -179,3 +183,42 @@ def TrainingButton():
 # trainset = datasets.MNIST(root='', train=True, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
 # trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=False)
 # print(trainloader.dataset.targets[0])
+
+
+#testing function
+def analysis():
+    testset = datasets.MNIST(root='', train=False, download=False, transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307),(0.3081))])) 
+    testloader = torch.utils.data.DataLoader(testset, batch_size= 1, shuffle=True)
+    model.eval()
+
+    count0 = 0
+    count1 = 0
+    total = 0
+    for data, target in testloader:
+        output = model(data)
+
+
+        pred = output.data.max(1, keepdim=True)[1]
+
+        predict = output.data.cpu().numpy().argmax()
+        
+        #print(predict)
+        if predict == 9:
+            count0 = count0 + 1
+            if pred.eq(target.data.view_as(pred)).cpu().sum():
+                count1 = count1 + 1
+        if target.data.numpy() == [9]:
+            total = total + 1
+
+
+    precision = (count1/count0)
+    recall = count1/total
+    f1 = (2*precision*recall)/(precision+recall)
+
+    print(precision)
+    print(recall)
+    print(f1)
+
+
+Loading()
+test()
