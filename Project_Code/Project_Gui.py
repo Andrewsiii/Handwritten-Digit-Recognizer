@@ -14,7 +14,7 @@ from os import path
 
 
 
-class ViewTrainingData(QLabel):
+class ViewTrainingData(QLabel):  #Image viewer for the training data
     
     def __init__(self):
         super().__init__()
@@ -22,7 +22,7 @@ class ViewTrainingData(QLabel):
 
         self.initUI()
     
-    def initUI(self):
+    def initUI(self):       # initialisations
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
@@ -38,7 +38,7 @@ class ViewTrainingData(QLabel):
         self.display_next()  
 
     
-    def display_next(self):
+    def display_next(self):    #This function will display the next image in the training dataset
         y, _ = self.data[self.k]
         self.string = str(self.digit.dataset.targets[self.k])
         self.string1 = self.string.replace('tensor', '')
@@ -59,7 +59,7 @@ class ViewTrainingData(QLabel):
 
 
         
-class ViewTestingData(QLabel):
+class ViewTestingData(QLabel):     # this class is the image viewer of the testing dataset
     
     def __init__(self):
         super().__init__()
@@ -67,7 +67,7 @@ class ViewTestingData(QLabel):
 
         self.initUI()
     
-    def initUI(self):
+    def initUI(self):        #initialisations of the image viewer
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
@@ -82,7 +82,7 @@ class ViewTestingData(QLabel):
         self.display_next()  
 
     
-    def display_next(self):
+    def display_next(self):    # this function will display the next image in the testing dataset
         y, _ = self.data[self.k]
         self.string = str(self.digit.dataset.targets[self.k])
         self.string1 = self.string.replace('tensor', '')
@@ -101,7 +101,7 @@ class ViewTestingData(QLabel):
         self.label1.setGeometry(300,0,50,50)
         self.k = self.k + 1 
 
-class Plot(FigureCanvas):
+class Plot(FigureCanvas):     
     def __init__(self, parent):
         fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
         super().__init__(fig)
@@ -109,7 +109,7 @@ class Plot(FigureCanvas):
 
         
 
-    def graph(self):
+    def graph(self):   # this will display the graph
         
         root_dir = os.getcwd()
         image = mnist_training.open_image(root_dir + '\\data.png')
@@ -122,7 +122,7 @@ class Plot(FigureCanvas):
         plt.ylabel('probability')
         plt.title('Classified Digit: ' + str(index))
 
-class Canvas(QLabel):    #Canvas Widget itself
+class Canvas(QLabel):    #This class is for the canvas widget that the user draws
 
     def __init__(self):
         super().__init__()
@@ -135,27 +135,27 @@ class Canvas(QLabel):    #Canvas Widget itself
         self.path = QPainterPath()
         self.clearImage()
 
-    def setPenColor(self, newColor):
+    def setPenColor(self, newColor):    #Change the colour of the pen
         self.myPenColor = newColor
 
-    def setPenWidth(self, newWidth):
+    def setPenWidth(self, newWidth):   #Change the width of the pen
         self.myPenWidth = newWidth
 
-    def clearImage(self):
+    def clearImage(self):   #Clears the image on the canvas by filling it with a black background
         self.path = QPainterPath()
         self.image.fill(Qt.black)
         self.update()
 
 
 
-    def paintEvent(self, event):
+    def paintEvent(self, event):    #triggers when an event happens
         painter = QPainter(self)
         painter.drawImage(event.rect(), self.image, self.rect())
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event):   #this function will trigger when the mouse is pressed
         self.path.moveTo(event.pos())
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event):  #this function will trigger when the mouse moves and draws a line
         self.path.lineTo(event.pos())
         p = QPainter(self.image)
         p.setPen(QPen(self.myPenColor,
@@ -165,12 +165,12 @@ class Canvas(QLabel):    #Canvas Widget itself
         p.end()
         self.update()
 
-    def saveImage(self):
+    def saveImage(self):    # This function is to save the image on the canvas
         root_dir = cwd = os.getcwd()
         self.image.save('data.png')
         
     
-class CanvasWindow(QMainWindow):   #The Canvas Window
+class CanvasWindow(QMainWindow):   #This class is for the canvas window which contains buttons and canvas widget
 
     def __init__(self,parent = None):
         super(CanvasWindow,self).__init__(parent,Qt.Window)
@@ -185,7 +185,7 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         Clear = QPushButton('&Clear', self)
         Clear.clicked.connect(self.canvas.clearImage)
 
-        Random = QPushButton('&Random', self)
+        
 
         Model = QPushButton('&Model', self)
         menu = QMenu(self)
@@ -199,7 +199,7 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         vbox.addWidget(Recognize)
         vbox.addWidget(Model)
         vbox.addWidget(Clear)
-        vbox.addWidget(Random)
+     
         ButtonWidget.setLayout(vbox)
         vbox.addStretch(1)
         grid.addWidget(ButtonWidget,0,2)
@@ -207,7 +207,7 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
         self.setWindowTitle('Canvas')
         self.setGeometry(300, 200, 800, 400)
     
-    def GraphShow(self):
+    def GraphShow(self):   #This function is for the graph to show, only when MNIST dataset has been downloaded and the model have been trained
         if(path.exists("model_weights.pth") == True) and (path.exists("MNIST") == True):
             self.canvas.saveImage()
             self.show_plot = Plot(self)
@@ -240,7 +240,7 @@ class CanvasWindow(QMainWindow):   #The Canvas Window
             ErrorBox.exec() 
         
 
-class Graph(QMainWindow):  
+class Graph(QMainWindow):     # This class is for the window of the graph
 
     def __init__(self,parent=None):
         super(Graph,self).__init__(parent,Qt.Window)
@@ -256,7 +256,7 @@ class Graph(QMainWindow):
         
 
         
-class MyApp(QMainWindow):   # The GUI ITSELF
+class MyApp(QMainWindow):   # This is the class for the main window which is initialised
 
     def __init__(self,parent=None):
         super(MyApp,self).__init__(parent)
@@ -268,7 +268,7 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(qApp.quit)
 
-        self.lbl = QLabel('    Handwritten Digit\nRecognition Programme', self)
+        self.lbl = QLabel('    Handwritten Digit\nRecognition Programme', self)    #The label on the main window
         self.lbl.setGeometry(200, 150,600,300)
         self.lbl.setFont(QFont('Times font',20, italic = False))
 
@@ -284,12 +284,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
 
         viewTrainingImages = QAction ('View Training Images', self)
         viewTrainingImages.setStatusTip('View the training images')  #to test use triggered function like drawing canvas
-        #self.view_training = ViewTrainingData()
         viewTrainingImages.triggered.connect(self.view_training)
 
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
-        #self.view_testing = ViewTestingData()
         viewTestingImages.triggered.connect(self.view_testing)
 
         DrawingCanvas = QAction('Drawing Canvas',self)
@@ -313,13 +311,13 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         self.show()
 
 
-    def OpenWindow(self):   #This function is for the dialog box when Train model is pressed. Need to update
+    def OpenWindow(self):   #This function is for the dialog box when Train model is pressed. This creates 3 buttons.
         dialog = QDialog(self)
         dialog.setWindowTitle('Train Model')
         dialog.setGeometry(300, 300, 900, 500)
         grid = QGridLayout()
         dialog.setLayout(grid)
-        btn1 = QPushButton('&Download MNIST', self)
+        btn1 = QPushButton('&Download MNIST', self)      #This creates the 3 buttons that download MNIST, Train and cancel button.
         btn1.clicked.connect(MyApp.MNIST_Download)
         btn2 = QPushButton(self)
         btn2.setText('Train')
@@ -341,9 +339,9 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         self.pbar.setFormat('0')
         grid.addWidget(self.pbar,3,2)
         dialog.show()
-    def CanvasClk(self):
+    def CanvasClk(self):     #this function is to open the canvas window
         self.newwindow.show()
-    def MNIST_Download(self):
+    def MNIST_Download(self):  #This function will download the MNIST dataset if the dataset has not been downloaded
         if(path.exists("MNIST") == True):
             ErrorBox = QMessageBox()
             ErrorBox.setIcon(QMessageBox.Information)
@@ -355,10 +353,10 @@ class MyApp(QMainWindow):   # The GUI ITSELF
         else:
             dataset = datasets.MNIST(root='', download=True)
 
-    def view_training(self):
+    def view_training(self):   #function to view the training data
         self.train = ViewTrainingData()
         self.train.show()
-    def view_testing(self):
+    def view_testing(self):  #function to view the testing data
         self.test = ViewTestingData()
         self.test.show()
     
