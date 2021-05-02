@@ -1,5 +1,6 @@
 ### Handwritten Digit Recognizer By Team 42
 The goal of the project was to design a deep neural network model and create a programme that allows a user to input a handwritten digit (0 to 9) onto a drawing canvas where the programme would then take the input and classify it into one of 10 classes (0 to 9) and show the probability of the prediction. The DNN model was to be trained and validated with the MNIST dataset which needed to be imported using TorchVision.
+
 <img width="576" alt="302 system diagram" src="https://user-images.githubusercontent.com/68927814/116801612-91b91200-ab5f-11eb-9fb5-1bdc338bfcd0.png">
 
 ## Model Versions
