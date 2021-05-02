@@ -22,7 +22,7 @@ class ViewTrainingData(QLabel):  #Image viewer for the training data
 
         self.initUI()
     
-    def initUI(self):       # initialisations
+    def initUI(self):       # setting up window, labels and buttons. Also downloading the mnist dataset in a new vaiable
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
@@ -38,9 +38,9 @@ class ViewTrainingData(QLabel):  #Image viewer for the training data
         self.display_next()  
 
     
-    def display_next(self):    #This function will display the next image in the training dataset
+    def display_next(self):    #this function iterates through the mnist dataset by downloading and replacing the previous image and then displaying it on a pixmap
         y, _ = self.data[self.k]
-        self.string = str(self.digit.dataset.targets[self.k])
+        self.string = str(self.digit.dataset.targets[self.k])   #extracting the target class to display which class the image belongs to
         self.string1 = self.string.replace('tensor', '')
         to_pil = transforms.ToPILImage()
         image = to_pil(y)
@@ -52,10 +52,10 @@ class ViewTrainingData(QLabel):  #Image viewer for the training data
         pixmap = pixmap.scaledToWidth(300)
         self.label.setPixmap(pixmap)
         self.label.setGeometry(0,0,300,300)
-        self.label1.setText(self.string1)
+        self.label1.setText(self.string1)               
         self.label1.setFont(QFont('Times font',20, italic = False))
         self.label1.setGeometry(300,0,50,50)
-        self.k = self.k + 1
+        self.k = self.k + 1     #iterating function of the dataset
 
 
         
@@ -67,7 +67,7 @@ class ViewTestingData(QLabel):     # this class is the image viewer of the testi
 
         self.initUI()
     
-    def initUI(self):        #initialisations of the image viewer
+    def initUI(self):         # setting up window, labels and buttons. Also downloading the mnist dataset in a new vaiable
         self.setWindowTitle(self.title)
         self.setGeometry(800,300,400,300)
         self.label = QLabel(self)
@@ -82,9 +82,9 @@ class ViewTestingData(QLabel):     # this class is the image viewer of the testi
         self.display_next()  
 
     
-    def display_next(self):    # this function will display the next image in the testing dataset
+    def display_next(self):    #this function iterates through the mnist dataset by downloading and replacing the previous image and then displaying it on a pixmap
         y, _ = self.data[self.k]
-        self.string = str(self.digit.dataset.targets[self.k])
+        self.string = str(self.digit.dataset.targets[self.k])   #extracting the target class to display which class the image belongs to
         self.string1 = self.string.replace('tensor', '')
         to_pil = transforms.ToPILImage()
         image = to_pil(y)
@@ -99,11 +99,13 @@ class ViewTestingData(QLabel):     # this class is the image viewer of the testi
         self.label1.setText(self.string1)
         self.label1.setFont(QFont('Times font',20, italic = False))
         self.label1.setGeometry(300,0,50,50)
-        self.k = self.k + 1 
+        self.k = self.k + 1             #iterating function of the dataset
 
+
+#class that is connected to the gui canvas and will display the probability chart when 'recognise' button is pressed.
 class Plot(FigureCanvas):     
     def __init__(self, parent):
-        fig, self.ax = plt.subplots(figsize=(5,4), dpi=200)
+        fig, self.ax = plt.subplots(figsize=(5,4), dpi=200) #setting up plot figure
         super().__init__(fig)
         self.setParent(parent)
 
@@ -119,7 +121,7 @@ class Plot(FigureCanvas):
         
         plt.bar(x,y)
         plt.xlabel('Digits')
-        plt.ylabel('probability')
+        plt.ylabel('probability')                       #plotting of the bar chart with axis and labels.
         plt.title('Classified Digit: ' + str(index))
 
 class Canvas(QLabel):    #This class is for the canvas widget that the user draws
@@ -179,7 +181,7 @@ class CanvasWindow(QMainWindow):   #This class is for the canvas window which co
         grid =QGridLayout()
         canvas.setLayout(grid)
         grid.addWidget(self.canvas,0,1)
-        Recognize = QPushButton('&Recognize', self)
+        Recognize = QPushButton('&Recognize', self) ##button that shows outcome of the drawing through the model
         Recognize.clicked.connect(self.GraphShow)
 
         Clear = QPushButton('&Clear', self)
@@ -214,7 +216,7 @@ class CanvasWindow(QMainWindow):   #This class is for the canvas window which co
             self.show_plot.graph()
             self.newwindow = Graph(self)
             self.newwindow.show()
-        elif (path.exists("model_weights.pth") == False) and (path.exists("MNIST") == False):
+        elif (path.exists("model_weights.pth") == False) and (path.exists("MNIST") == False):       #eror dialog for when programme is run without the mnist database downloaded
             ErrorBox = QMessageBox()
             ErrorBox.setIcon(QMessageBox.Information)
             ErrorBox.setText("Error: Please Download MNIST and then train the model")
@@ -251,8 +253,8 @@ class Graph(QMainWindow):     # This class is for the window of the graph
         self.setGeometry(500, 50, 900, 900)
         
 
-        chart = Plot(self)
-        chart.graph()
+        chart = Plot(self) #new Plot class instance
+        chart.graph()       #plotting of the graph
         
 
         
@@ -272,25 +274,25 @@ class MyApp(QMainWindow):   # This is the class for the main window which is ini
         self.lbl.setGeometry(200, 150,600,300)
         self.lbl.setFont(QFont('Times font',20, italic = False))
 
-        self.lbl2 = QLabel('by Paul Kim & Andrew Sio\nCompsys 302 2021', self)
+        self.lbl2 = QLabel('by Paul Kim & Andrew Sio\nCompsys 302 2021', self)  #Title page information
         self.lbl2.setGeometry(580, 390,600,300)
         self.lbl2.setFont(QFont('Times font',8, italic = True))
 
-        TrainModel = QAction ('Train Model', self)
+        TrainModel = QAction ('Train Model', self)  #menu bar option connected to train model window
         TrainModel.setShortcut('Ctrl+T')
         TrainModel.setStatusTip('Train the model')
         TrainModel.triggered.connect(self.OpenWindow)
         
 
-        viewTrainingImages = QAction ('View Training Images', self)
-        viewTrainingImages.setStatusTip('View the training images')  #to test use triggered function like drawing canvas
+        viewTrainingImages = QAction ('View Training Images', self)          ##menu bar option connected to viewing MNIST training and testing database images
+        viewTrainingImages.setStatusTip('View the training images')  
         viewTrainingImages.triggered.connect(self.view_training)
 
         viewTestingImages = QAction ('View Testing Images', self)
         viewTestingImages.setStatusTip('View the testing images')
         viewTestingImages.triggered.connect(self.view_testing)
 
-        DrawingCanvas = QAction('Drawing Canvas',self)
+        DrawingCanvas = QAction('Drawing Canvas',self)              #menu bar option that brings up the drawing canvas for user to input handwritten digit
         DrawingCanvas.setStatusTip('View the testing images')
         self.newwindow = CanvasWindow(self)
         DrawingCanvas.triggered.connect(self.CanvasClk)
@@ -299,7 +301,7 @@ class MyApp(QMainWindow):   # This is the class for the main window which is ini
         self.statusBar().showMessage('Ready')
 
         menubar = self.menuBar()
-        filemenu = menubar.addMenu('&File')
+        filemenu = menubar.addMenu('&File')     #creating file menu bar
         filemenu.addAction(TrainModel)
         filemenu.addAction(DrawingCanvas)
         filemenu.addAction(exitAction)

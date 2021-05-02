@@ -208,11 +208,11 @@ def analysis():
         predict = output.data.cpu().numpy().argmax()
         
         #loop that extracts the true positive, false positive and false negative values for a single class
-        if predict == 9:
+        if predict == 9: #class value
             count0 = count0 + 1
             if pred.eq(target.data.view_as(pred)).cpu().sum():
                 count1 = count1 + 1
-        if target.data.numpy() == [9]:
+        if target.data.numpy() == [9]: #class value
             total = total + 1
 
     #Calculation of the statistical analysis values.
@@ -223,5 +223,4 @@ def analysis():
     print(precision)
     print(recall)
     print(f1)
-    print('hi')
 
