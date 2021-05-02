@@ -1,5 +1,11 @@
 ### Handwritten Digit Recognizer By Team 42
-This Handwritten Digit Recognizer is a GUI which will recognize numbers 0-9 when handwritten in the GUI using the Lenet-5 Model which has been trained by using the MNIST dataset which has been imported.
+The goal of the project was to design a deep neural network model and create a programme that allows a user to input a handwritten digit (0 to 9) onto a drawing canvas where the programme would then take the input and classify it into one of 10 classes (0 to 9) and show the probability of the prediction. The DNN model was to be trained and validated with the MNIST dataset which needed to be imported using TorchVision.
+<img width="576" alt="302 system diagram" src="https://user-images.githubusercontent.com/68927814/116801612-91b91200-ab5f-11eb-9fb5-1bdc338bfcd0.png">
+
+## Model Versions
+The first version of the model was just the generic Lenet-5 architecture but later on batch normalisation layers and dropout layers were added.
+The parameters such as learning rate, batch size and number of epochs were also varied while trying to discover the most optimum model.
+
 ## Installation
 The installation requirements are written under requirements.txt.Please download these libraries before running this project.
 
@@ -36,9 +42,4 @@ This probability chart will show the probability of each digit and also show wha
 Another feature that our GUI includes is that it can show the images within the MNIST dataset. This feature can be found in the main window under view menubar. The user will have the option of choosing viewing either the testing images or the training images. A image viewer window will appear and show the digit and the user will be able to browse using the show next button. The image viewer is shown below.
 
 ![image](https://user-images.githubusercontent.com/68887738/116258358-fd4e5880-a7c8-11eb-90a7-6d8efa1e5efe.png)
-
-
-## DNN MODEL
-
-The DNN model can be found under the project Code
 
